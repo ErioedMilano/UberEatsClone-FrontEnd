@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodieExpress - Bestel eten</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header>
+    <h1><i class="fas fa-utensils"></i> FoodieExpress</h1>
+    <div class="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
+    </div>
+</header>
+
+<main>
+    <!-- Restaurantlijst -->
+    <section id="restaurants">
+        <h2>Restaurants bij jou in de buurt</h2>
+        <div class="restaurant-grid" id="restaurant-grid">
+            <!-- Wordt gevuld door JavaScript -->
+        </div>
+    </section>
+
+    <!-- Menu van geselecteerd restaurant -->
+    <section id="menu-section" style="display: none;">
+        <button id="back-to-restaurants"><i class="fas fa-arrow-left"></i> Terug naar restaurants</button>
+        <h2 id="restaurant-name"></h2>
+        <div class="menu-grid" id="menu-grid">
+            <!-- Wordt gevuld door JavaScript -->
+        </div>
+    </section>
+
+    <!-- Winkelmandje (zijbalk) -->
+    <aside id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Mijn bestelling</h3>
+            <button id="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Wordt gevuld door JavaScript -->
+        </div>
+        <div class="cart-total">
+            <span>Totaal:</span>
+            <span id="cart-total">€0,00</span>
+        </div>
+        <button id="checkout-btn" class="checkout-btn">Bestellen</button>
+    </aside>
+</main>
+
+<!-- Bestelmodal -->
+<div id="order-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Bestelgegevens</h3>
+        <form id="order-form">
+            <label for="customer-name">Naam:</label>
+            <input type="text" id="customer-name" required>
+            <label for="customer-address">Adres:</label>
+            <input type="text" id="customer-address" required>
+            <button type="submit">Plaats bestelling</button>
+        </form>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/components/restaurantCard.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
