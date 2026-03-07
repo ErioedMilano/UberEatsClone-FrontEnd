@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - FoodieExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header>
+    <h1><i class="fas fa-crown"></i> Admin Panel</h1>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="orders.html">Bestellingen</a>
+        <a href="#" id="logout-btn">Uitloggen</a>
+    </nav>
+</header>
+<main>
+    <h2>Dashboard</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Meest bestelde restaurants</h3>
+            <ul class="stat-list" id="top-restaurants">
+                <li>Laden...</li>
+            </ul>
+        </div>
+        <div class="stat-card">
+            <h3>Meest bestelde gerechten</h3>
+            <ul class="stat-list" id="top-dishes">
+                <li>Laden...</li>
+            </ul>
+        </div>
+        <div class="stat-card">
+            <h3>Vandaag</h3>
+            <p>Aantal bestellingen: <strong id="total-orders-today">0</strong></p>
+            <p>Omzet: <strong id="revenue-today">€0,00</strong></p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <h3>Bestellingen laatste 24 uur</h3>
+        <div class="chart-container">
+            <canvas id="orders-chart"></canvas>
+        </div>
+    </div>
+</main>
+
+<script src="../adminjs/admin.js"></script>
+<script src="../adminjs/admin-api.js"></script>
+<script src="../adminjs/dashboard.js"></script>
+</body>
+</html>

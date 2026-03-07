@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestellingen beheren - FoodieExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header>
+    <h1><i class="fas fa-crown"></i> Admin Panel</h1>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="orders.html">Bestellingen</a>
+        <a href="#" id="logout-btn">Uitloggen</a>
+    </nav>
+</header>
+<main>
+    <h2>Bestellingsoverzicht</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Klant</th>
+            <th>Adres</th>
+            <th>Datum</th>
+            <th>Totaal</th>
+            <th>Acties</th>
+        </tr>
+        </thead>
+        <tbody id="orders-table-body">
+        <!-- Wordt gevuld door JS -->
+        </tbody>
+    </table>
+</main>
+
+<!-- Modal voor besteldetails -->
+<div id="order-details-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-details">&times;</span>
+        <h3>Bestelling details</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Menu item ID</th>
+                <th>Aantal</th>
+                <th>Prijs per stuk</th>
+                <th>Totaal</th>
+            </tr>
+            </thead>
+            <tbody id="order-items-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="../adminjs/admin-api.js"></script>
+<script src="../adminjs/admin.js"></script>
+<script src="../adminjs/orders.js"></script>
+</body>
+</html>

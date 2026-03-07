@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants beheren - FoodieExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 0.3rem 0.8rem; margin: 0.2rem; cursor: pointer; }
+        .add-btn { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; margin-bottom: 1rem; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: white; margin: 10% auto; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; }
+        .modal-content input, .modal-content textarea { width: 100%; padding: 0.5rem; margin: 0.5rem 0; }
+        .close { float: right; cursor: pointer; }
+    </style>
+</head>
+<body>
+<header>
+    <h1><i class="fas fa-crown"></i> Admin Panel</h1>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="orders.html">Bestellingen</a>
+        <a href="#" id="logout-btn">Uitloggen</a>
+    </nav>
+</header>
+<main>
+    <h2>Restaurantbeheer</h2>
+    <button class="add-btn" id="add-restaurant-btn"><i class="fas fa-plus"></i> Nieuw restaurant</button>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Afbeelding</th>
+            <th>Naam</th>
+            <th>Keuken</th>
+            <th>Rating</th>
+            <th>Acties</th>
+        </tr>
+        </thead>
+        <tbody id="restaurants-table-body">
+        <!-- Wordt gevuld door JS -->
+        </tbody>
+    </table>
+</main>
+
+<!-- Modal voor toevoegen/bewerken -->
+<div id="form-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <h3 id="form-title">Nieuw restaurant</h3>
+        <form id="restaurant-form">
+            <input type="hidden" id="restaurant-id">
+            <label>Naam</label>
+            <input type="text" id="name" required>
+            <label>Afbeelding URL</label>
+            <input type="url" id="imageUrl" required>
+            <label>Keuken</label>
+            <input type="text" id="cuisine" required>
+            <label>Rating (0-5)</label>
+            <input type="number" step="0.1" min="0" max="5" id="rating" required>
+            <button type="submit">Opslaan</button>
+            <button type="button" id="cancel-form">Annuleren</button>
+        </form>
+    </div>
+</div>
+
+<script src="../adminjs/admin.js"></script>
+<script src="../adminjs/admin-api.js"></script>
+<script src="../adminjs/restaurants.js"></script>
+</body>
+</html>

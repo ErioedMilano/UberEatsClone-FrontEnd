@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - FoodieExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="login-container">
+    <h2><i class="fas fa-lock"></i> Admin Login</h2>
+    <form id="login-form">
+        <label for="username">Gebruikersnaam</label>
+        <input type="text" id="username" required>
+        <label for="password">Wachtwoord</label>
+        <input type="password" id="password" required>
+        <button type="submit">Inloggen</button>
+    </form>
+    <div id="login-error" class="error-message"></div>
+</div>
+
+<script src="../adminjs/admin-api.js"></script>
+<script src="../adminjs/admin.js"></script>
+<script src="../adminjs/login.js"></script>
+</body>
+</html>
