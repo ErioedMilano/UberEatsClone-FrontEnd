@@ -14,18 +14,47 @@ const checkoutBtn = document.getElementById('checkout-btn');
 const orderModal = document.getElementById('order-modal');
 const closeModal = document.querySelector('.close-modal');
 const orderForm = document.getElementById('order-form');
+const loader = document.getElementById('loader');
+
+// Thema toggle
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = themeToggle.querySelector('i');
+
+// Check voor opgeslagen thema
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+    if (isDark) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+});
+
+// Loader functies
+function showLoader() {
+    if (loader) loader.style.display = 'block';
+    if (restaurantGrid) restaurantGrid.style.display = 'none';
+}
+
+function hideLoader() {
+    if (loader) loader.style.display = 'none';
+    if (restaurantGrid) restaurantGrid.style.display = 'grid';
+}
 
 // Laad restaurants bij start
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const restaurants = await fetchRestaurants();
-        renderRestaurants(restaurants);
-    } catch (error) {
-        console.error('Fout bij laden restaurants:', error);
-        if (restaurantGrid) {
-            restaurantGrid.innerHTML = '<p>Fout bij laden restaurants. Controleer of de backend draait.</p>';
-        }
-    }
+    await loadRestaurants();
 
     // Initialiseer cart UI
     if (typeof cart !== 'undefined') {
@@ -106,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Event delegation voor cart acties (omdat items dynamisch worden toegevoegd)
+    // Event delegation voor cart acties
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
             const cartItem = e.target.closest('.cart-item');
@@ -133,6 +162,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
+
+async function loadRestaurants() {
+    showLoader();
+    try {
+        const restaurants = await fetchRestaurants();
+        renderRestaurants(restaurants);
+    } catch (error) {
+        console.error('Fout bij laden restaurants:', error);
+        if (restaurantGrid) {
+            restaurantGrid.innerHTML = '<p>Fout bij laden restaurants. Controleer of de backend draait.</p>';
+        }
+    } finally {
+        hideLoader();
+    }
+}
 
 function renderRestaurants(restaurants) {
     if (!restaurantGrid) return;
@@ -167,14 +211,29 @@ function renderMenu(menuItems, restaurantName) {
         const menuItemDiv = document.createElement('div');
         menuItemDiv.className = 'menu-item';
         menuItemDiv.innerHTML = `
-            <div class="menu-item-info">
-                <h4>${item.name}</h4>
-                <p>${item.description || ''}</p>
-                <div class="menu-item-price">€${item.price.toFixed(2)}</div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <img src="${item.imageUrl || 'https://via.placeholder.com/80'}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                <div class="menu-item-info">
+                    <h4>${item.name}</h4>
+                    <p>${item.description || ''}</p>
+                    <div class="menu-item-price">€${item.price.toFixed(2)}</div>
+                </div>
             </div>
             <button class="add-to-cart" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">Toevoegen</button>
         `;
         menuGrid.appendChild(menuItemDiv);
+    });
+
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const menuItem = {
+                id: parseInt(btn.dataset.id),
+                name: btn.dataset.name,
+                price: parseFloat(btn.dataset.price)
+            };
+            cart.addItem(menuItem, 1);
+        });
     });
 
     // Voeg event listeners toe aan de knoppen

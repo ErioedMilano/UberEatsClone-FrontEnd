@@ -51,7 +51,10 @@ async function adminFetch(url) {
         window.location.href = '/admin/login.html';
         throw new Error('Niet ingelogd');
     }
-    if (!response.ok) throw new Error('Fout bij ophalen data');
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Fout bij ophalen data: ${response.status} - ${errorText}`);
+    }
     return await response.json();
 }
 
@@ -121,7 +124,7 @@ async function deleteRestaurant(id) {
 
 // Menu items per restaurant
 async function getMenuByRestaurant(restaurantId) {
-    return adminFetch(`/restaurants/${restaurantId}/menu`);
+    return adminFetch(`/menu?restaurantId=${restaurantId}`);
 }
 
 async function createMenuItem(item) {

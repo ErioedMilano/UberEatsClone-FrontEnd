@@ -22,26 +22,41 @@
 </header>
 <main>
     <h2>Dashboard</h2>
+
+    <!-- Stat cards -->
     <div class="stats-grid">
         <div class="stat-card">
-            <h3>Meest bestelde restaurants</h3>
-            <ul class="stat-list" id="top-restaurants">
-                <li>Laden...</li>
-            </ul>
+            <h3>Aantal bestellingen vandaag</h3>
+            <p class="stat-number" id="total-orders-today">0</p>
         </div>
         <div class="stat-card">
-            <h3>Meest bestelde gerechten</h3>
-            <ul class="stat-list" id="top-dishes">
-                <li>Laden...</li>
-            </ul>
+            <h3>Omzet vandaag</h3>
+            <p class="stat-number" id="revenue-today">€0,00</p>
         </div>
         <div class="stat-card">
-            <h3>Vandaag</h3>
-            <p>Aantal bestellingen: <strong id="total-orders-today">0</strong></p>
-            <p>Omzet: <strong id="revenue-today">€0,00</strong></p>
+            <h3>Totaal bestellingen</h3>
+            <p class="stat-number" id="total-orders">0</p>
         </div>
     </div>
-    <div class="stat-card">
+
+    <!-- Donut charts for top restaurants and dishes -->
+    <div class="charts-row">
+        <div class="chart-card">
+            <h3>Meest bestelde restaurants</h3>
+            <div class="chart-container">
+                <canvas id="restaurants-chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Meest bestelde gerechten</h3>
+            <div class="chart-container">
+                <canvas id="dishes-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Line chart for last 24 hours -->
+    <div class="chart-card full-width">
         <h3>Bestellingen laatste 24 uur</h3>
         <div class="chart-container">
             <canvas id="orders-chart"></canvas>
@@ -49,8 +64,8 @@
     </div>
 </main>
 
-<script src="../adminjs/admin.js"></script>
 <script src="../adminjs/admin-api.js"></script>
 <script src="../adminjs/dashboard.js"></script>
+<script src="../adminjs/admin.js"></script>
 </body>
 </html>

@@ -11,9 +11,14 @@
 <body>
 <header>
     <h1><i class="fas fa-utensils"></i> FoodieExpress</h1>
-    <div class="cart-icon">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count">0</span>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <button id="theme-toggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+        </div>
     </div>
 </header>
 
@@ -21,6 +26,7 @@
     <!-- Restaurantlijst -->
     <section id="restaurants">
         <h2>Restaurants bij jou in de buurt</h2>
+        <div class="loader" id="loader" style="display: none;"></div>
         <div class="restaurant-grid" id="restaurant-grid">
             <!-- Wordt gevuld door JavaScript -->
         </div>

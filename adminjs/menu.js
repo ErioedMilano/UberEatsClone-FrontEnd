@@ -29,19 +29,20 @@ async function loadMenu(restaurantId) {
         renderMenu(items);
     } catch (err) {
         console.error(err);
-        document.getElementById('menu-table-body').innerHTML = '<tr><td colspan="5">Fout bij laden menu</td></tr>';
+        document.getElementById('menu-table-body').innerHTML = '<tr><td colspan="6">Fout bij laden menu: ' + err.message + '</td></tr>';
     }
 }
 
 function renderMenu(items) {
     const tbody = document.getElementById('menu-table-body');
     if (!items || items.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5">Geen menu-items gevonden</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6">Geen menu-items gevonden</td></tr>';
         return;
     }
     tbody.innerHTML = items.map(i => `
         <tr data-id="${i.id}">
             <td>${i.id}</td>
+            <td><img src="${i.imageUrl || 'https://via.placeholder.com/50'}" alt="${i.name}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;"></td>
             <td>${i.name}</td>
             <td>${i.description || ''}</td>
             <td>€${i.price.toFixed(2)}</td>
@@ -59,7 +60,7 @@ function setupEventListeners() {
         if (currentRestaurantId) {
             loadMenu(currentRestaurantId);
         } else {
-            document.getElementById('menu-table-body').innerHTML = '<tr><td colspan="5">Selecteer eerst een restaurant</td></tr>';
+            document.getElementById('menu-table-body').innerHTML = '<tr><td colspan="6">Selecteer eerst een restaurant</td></tr>';
         }
     });
 
@@ -93,7 +94,8 @@ function setupEventListeners() {
             restaurantId: parseInt(currentRestaurantId),
             name: document.getElementById('menu-name').value,
             description: document.getElementById('menu-description').value,
-            price: parseFloat(document.getElementById('menu-price').value)
+            price: parseFloat(document.getElementById('menu-price').value),
+            imageUrl: document.getElementById('menu-image').value || null
         };
         try {
             if (editingId) {
@@ -125,9 +127,11 @@ function setupEventListeners() {
             editingId = id;
             document.getElementById('menu-form-title').textContent = 'Bewerk gerecht';
             document.getElementById('menu-item-id').value = id;
-            document.getElementById('menu-name').value = row.cells[1].textContent;
-            document.getElementById('menu-description').value = row.cells[2].textContent;
-            document.getElementById('menu-price').value = row.cells[3].textContent.replace('€', '');
+            document.getElementById('menu-name').value = row.cells[2].textContent;
+            document.getElementById('menu-description').value = row.cells[3].textContent;
+            document.getElementById('menu-price').value = row.cells[4].textContent.replace('€', '');
+            const img = row.cells[1].querySelector('img');
+            document.getElementById('menu-image').value = img ? img.src : '';
             document.getElementById('menu-form-modal').style.display = 'block';
         }
     });

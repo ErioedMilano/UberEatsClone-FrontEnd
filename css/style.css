@@ -1,3 +1,35 @@
+/* ===== VARIABLES ===== */
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --card-bg: white;
+    --header-bg: #ff6b35;
+    --header-text: white;
+    --border-color: #ddd;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    --hover-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    --accent: #ff6b35;
+    --accent-hover: #e85a2a;
+    --input-bg: white;
+    --modal-overlay: rgba(0,0,0,0.5);
+}
+
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --card-bg: #2d2d2d;
+    --header-bg: #2d3748;
+    --header-text: #fff;
+    --border-color: #404040;
+    --shadow: 0 4px 15px rgba(0,0,0,0.3);
+    --hover-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    --accent: #ff8f5e;
+    --accent-hover: #ff6b35;
+    --input-bg: #3a3a3a;
+    --modal-overlay: rgba(0,0,0,0.8);
+}
+
+/* ===== RESET & BASE ===== */
 * {
     margin: 0;
     padding: 0;
@@ -6,12 +38,16 @@
 }
 
 body {
-    background-color: #f8f9fa;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
 }
 
+/* ===== HEADER ===== */
 header {
-    background-color: #ff6b35;
-    color: white;
+    background-color: var(--header-bg);
+    color: var(--header-text);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -20,6 +56,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background-color 0.3s;
 }
 
 header h1 {
@@ -27,10 +64,37 @@ header h1 {
     font-weight: 600;
 }
 
+/* Theme toggle button */
+.theme-toggle {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+/* Cart icon */
 .cart-icon {
     position: relative;
     cursor: pointer;
     font-size: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
 }
 
 #cart-count {
@@ -44,6 +108,7 @@ header h1 {
     font-size: 0.8rem;
 }
 
+/* ===== MAIN ===== */
 main {
     padding: 2rem;
     max-width: 1200px;
@@ -52,9 +117,39 @@ main {
 
 h2 {
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--text-color);
+    position: relative;
+    display: inline-block;
 }
 
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+
+/* ===== LOADER ===== */
+.loader {
+    border: 4px solid rgba(255,107,53,0.1);
+    border-top: 4px solid var(--accent);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 3rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== RESTAURANT GRID ===== */
 .restaurant-grid, .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -62,23 +157,32 @@ h2 {
     margin-bottom: 2rem;
 }
 
+/* Card styling */
 .card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--hover-shadow);
 }
 
 .card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.card:hover img {
+    transform: scale(1.05);
 }
 
 .card-content {
@@ -87,11 +191,11 @@ h2 {
 
 .card h3 {
     margin-bottom: 0.5rem;
-    font-size: 1.2rem;
+    color: var(--text-color);
 }
 
 .card .cuisine {
-    color: #ff6b35;
+    color: var(--accent);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 }
@@ -101,55 +205,69 @@ h2 {
     font-weight: 600;
 }
 
+/* Menu items */
 .menu-item {
-    background: white;
+    background: var(--card-bg);
     border-radius: 8px;
     padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.menu-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hover-shadow);
 }
 
 .menu-item-info h4 {
     margin-bottom: 0.25rem;
+    color: var(--text-color);
 }
 
 .menu-item-info p {
-    color: #666;
+    color: var(--text-color);
+    opacity: 0.8;
     font-size: 0.9rem;
 }
 
 .menu-item-price {
     font-weight: 600;
-    color: #ff6b35;
+    color: var(--accent);
 }
 
 .add-to-cart {
-    background-color: #ff6b35;
+    background-color: var(--accent);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .add-to-cart:hover {
-    background-color: #e85a2a;
+    background-color: var(--accent-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255,107,53,0.3);
 }
 
+/* ===== CART SIDEBAR ===== */
 .cart-sidebar {
     position: fixed;
     top: 0;
     right: -400px;
     width: 350px;
     height: 100vh;
-    background: white;
+    background: var(--card-bg);
+    color: var(--text-color);
     box-shadow: -2px 0 10px rgba(0,0,0,0.1);
     padding: 1rem;
-    transition: right 0.3s;
+    transition: right 0.3s ease;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -171,6 +289,7 @@ h2 {
     border: none;
     font-size: 1.2rem;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 .cart-items {
@@ -184,7 +303,7 @@ h2 {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .cart-item-details {
@@ -193,11 +312,18 @@ h2 {
 
 .cart-item-actions button {
     background: none;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     width: 25px;
     height: 25px;
     border-radius: 4px;
     cursor: pointer;
+    color: var(--text-color);
+    transition: background 0.2s;
+}
+
+.cart-item-actions button:hover {
+    background: var(--accent);
+    color: white;
 }
 
 .cart-total {
@@ -205,10 +331,11 @@ h2 {
     font-size: 1.2rem;
     margin: 1rem 0;
     text-align: right;
+    color: var(--text-color);
 }
 
 .checkout-btn {
-    background-color: #ff6b35;
+    background-color: var(--accent);
     color: white;
     border: none;
     padding: 0.8rem;
@@ -216,25 +343,34 @@ h2 {
     font-weight: 600;
     cursor: pointer;
     width: 100%;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .checkout-btn:hover {
-    background-color: #e85a2a;
+    background-color: var(--accent-hover);
+    transform: scale(1.02);
 }
 
+/* ===== BACK BUTTON ===== */
 #back-to-restaurants {
     background: none;
     border: none;
-    color: #ff6b35;
+    color: var(--accent);
     font-size: 1rem;
     cursor: pointer;
     margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+#back-to-restaurants:hover {
+    transform: translateX(-5px);
 }
 
 #back-to-restaurants i {
     margin-right: 0.5rem;
 }
 
+/* ===== MODAL ===== */
 .modal {
     display: none;
     position: fixed;
@@ -242,7 +378,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: var(--modal-overlay);
     z-index: 2000;
     justify-content: center;
     align-items: center;
@@ -253,12 +389,20 @@ h2 {
 }
 
 .modal-content {
-    background: white;
+    background: var(--card-bg);
+    color: var(--text-color);
     padding: 2rem;
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
     position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .close-modal {
@@ -267,37 +411,82 @@ h2 {
     right: 1rem;
     font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 #order-form label {
     display: block;
     margin-top: 1rem;
     font-weight: 600;
+    color: var(--text-color);
 }
 
 #order-form input {
     width: 100%;
     padding: 0.5rem;
     margin-top: 0.25rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--text-color);
 }
 
 #order-form button {
     margin-top: 1.5rem;
     width: 100%;
-    background-color: #ff6b35;
+    background-color: var(--accent);
     color: white;
     border: none;
     padding: 0.8rem;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
 }
 
+#order-form button:hover {
+    background-color: var(--accent-hover);
+    transform: scale(1.02);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered animations */
+.restaurant-grid .card:nth-child(1) { animation-delay: 0.1s; }
+.restaurant-grid .card:nth-child(2) { animation-delay: 0.2s; }
+.restaurant-grid .card:nth-child(3) { animation-delay: 0.3s; }
+.restaurant-grid .card:nth-child(4) { animation-delay: 0.4s; }
+.restaurant-grid .card:nth-child(5) { animation-delay: 0.5s; }
+.restaurant-grid .card:nth-child(6) { animation-delay: 0.6s; }
+
+.menu-grid .menu-item:nth-child(1) { animation-delay: 0.1s; }
+.menu-grid .menu-item:nth-child(2) { animation-delay: 0.2s; }
+.menu-grid .menu-item:nth-child(3) { animation-delay: 0.3s; }
+.menu-grid .menu-item:nth-child(4) { animation-delay: 0.4s; }
+.menu-grid .menu-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .cart-sidebar {
         width: 100%;
         right: -100%;
+    }
+
+    .restaurant-grid, .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+
+    header h1 {
+        font-size: 1.4rem;
     }
 }

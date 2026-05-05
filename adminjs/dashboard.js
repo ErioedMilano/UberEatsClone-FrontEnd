@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const data = await getDashboardData();
-        renderTopRestaurants(data.topRestaurants);
-        renderTopDishes(data.topDishes);
-        renderTodayStats(data.totalOrdersToday, data.revenueToday);
+        renderStats(data);
+        renderRestaurantsChart(data.topRestaurants);
+        renderDishesChart(data.topDishes);
         renderOrdersChart(data.ordersByHour);
     } catch (err) {
         console.error(err);
@@ -11,38 +11,82 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-function renderTopRestaurants(restaurants) {
-    const list = document.getElementById('top-restaurants');
+function renderStats(data) {
+    document.getElementById('total-orders-today').textContent = data.totalOrdersToday || 0;
+    document.getElementById('revenue-today').textContent = `€${(data.revenueToday || 0).toFixed(2)}`;
+    document.getElementById('total-orders').textContent = data.totalOrders || 0;
+}
+
+function renderRestaurantsChart(restaurants) {
+    const canvas = document.getElementById('restaurants-chart');
     if (!restaurants || restaurants.length === 0) {
-        list.innerHTML = '<li>Geen restaurants met bestellingen</li>';
+        canvas.parentElement.innerHTML = '<p>Geen data</p>';
         return;
     }
-    list.innerHTML = restaurants.map(r =>
-        `<li><span>${r.name}</span> <span class="count">${r.orderCount} bestellingen</span></li>`
-    ).join('');
+    const ctx = canvas.getContext('2d');
+    const labels = restaurants.map(r => r.name);
+    const counts = restaurants.map(r => r.orderCount);
+    const colors = generateColors(labels.length);
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: counts,
+                backgroundColor: colors,
+                borderWidth: 0,
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            },
+            cutout: '70%'
+        }
+    });
 }
 
-function renderTopDishes(dishes) {
-    const list = document.getElementById('top-dishes');
+function renderDishesChart(dishes) {
+    const canvas = document.getElementById('dishes-chart');
     if (!dishes || dishes.length === 0) {
-        list.innerHTML = '<li>Geen gerechten besteld</li>';
+        canvas.parentElement.innerHTML = '<p>Geen data</p>';
         return;
     }
-    list.innerHTML = dishes.map(d =>
-        `<li><span>${d.name}</span> <span class="count">${d.totalQuantity} keer besteld</span></li>`
-    ).join('');
-}
+    const ctx = canvas.getContext('2d');
+    const labels = dishes.map(d => d.name);
+    const counts = dishes.map(d => d.totalQuantity);
+    const colors = generateColors(labels.length);
 
-function renderTodayStats(totalOrders, revenue) {
-    document.getElementById('total-orders-today').textContent = totalOrders || 0;
-    document.getElementById('revenue-today').textContent = `€${(revenue || 0).toFixed(2)}`;
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: counts,
+                backgroundColor: colors,
+                borderWidth: 0,
+                hoverOffset: 15  // zorgt dat segment naar buiten komt bij hover
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            },
+            cutout: '70%'
+        }
+    });
 }
 
 function renderOrdersChart(ordersByHour) {
     const canvas = document.getElementById('orders-chart');
-    const container = canvas.parentElement;
     if (!ordersByHour || Object.keys(ordersByHour).length === 0) {
-        container.innerHTML = '<p>Geen bestellingen in de laatste 24 uur</p>';
+        canvas.parentElement.innerHTML = '<p>Geen bestellingen in de laatste 24 uur</p>';
         return;
     }
     const ctx = canvas.getContext('2d');
@@ -66,11 +110,17 @@ function renderOrdersChart(ordersByHour) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1 }
-                }
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
             }
         }
     });
+}
+
+function generateColors(count) {
+    const baseColors = ['#ff6b35', '#4299e1', '#48bb78', '#f56565', '#9f7aea', '#ed8936', '#667eea'];
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+        colors.push(baseColors[i % baseColors.length]);
+    }
+    return colors;
 }
