@@ -1,4 +1,4 @@
-const ADMIN_API_BASE = 'http://localhost:8080/api/admin';
+const ADMIN_API_BASE = API_BASE_URL + '/api/admin';
 
 // Helper om token op te halen
 function getToken() {

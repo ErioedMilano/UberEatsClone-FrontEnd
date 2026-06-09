@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080'; // Later vervangen door live URL
+const API_BASE_URL = 'https://ubereats-backend.onrender.com';
 
 async function fetchRestaurants() {
     const response = await fetch(`${API_BASE_URL}/api/restaurants`);
