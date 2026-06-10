@@ -1,4 +1,4 @@
-const ADMIN_API_BASE = API_BASE_URL + '/api/admin';
+const API_BASE_URL = 'https://ubereats-backend.onrender.com';
 
 // Helper om token op te halen
 function getToken() {
